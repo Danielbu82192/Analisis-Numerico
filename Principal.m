@@ -54,19 +54,7 @@ function MenMetodosAbiertos()
  endfunction
 
  
-function MenMetodosMatriciales()     
-   try
-    Men3=0;
-    while(Men3!=5)
-      Men3=menu("Menu Metodos Matriciales","Metodo de cramer",
-      "Metodo Sarrus", "Metodo laplace","Metodo de Gauss-Seidel","Atras")
-            
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-   
- endfunction
+
  
 function MenMetodosAjusteCurva()     
    try

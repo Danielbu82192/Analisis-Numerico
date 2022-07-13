@@ -65,7 +65,7 @@ function MetodosCerrados()
     ban=1;
     i=i+1;
   endwhile
-  Mostrar(Avec,Bvec,Favec,Fbvec,MNvec,sigvect,errorVect);  
+  Mostrar(Avec,Bvec,MNvec,sigvect,errorVect);  
     catch
       waitfor(msgbox("Error en Biseccion","Error"))
     end_try_catch
@@ -186,11 +186,11 @@ Men1=0;
            answer=[1,Avec(1),Bvec(1),MNvec(1),sigvect(1),100000];
             
            for i=2:length(Avec)              
-           newLine = [i,Avec(i),Bvec(i),MNvec(i),sigvect(i),errorVect(i)];
-           before = answer;
-           answer = [before; newLine];
-         endfor
-          answer=num2str(answer)
+            newLine = [i,Avec(i),Bvec(i),MNvec(i),sigvect(i),errorVect(i)];
+            before = answer;
+            answer = [before; newLine];
+           endfor
+           answer=num2str(answer)
            newLine=[" i |"," A |"," B |","F(a)","F(b)"," MN |"," Signo |"," Error "];
            before = answer;
            answer = [newLine; before];
@@ -212,10 +212,6 @@ Men1=0;
            waitfor(msgbox(num2str(answer),"Tabla")) 
            raiz=MNvec(length(MNvec)); 
            waitfor(msgbox(sprintf("La raiz mas proxima es %d",raiz),"Raiz"))
-           #opt=questdlg("¿Seguro desea salir?", "Salir", "Si", "No") 
-           #if(opt=="No")
-          #    Men1=0
-          # endif
           case 4
         otherwise
            waitfor(msgbox("Debe seleccionar una opcion correcta"))
