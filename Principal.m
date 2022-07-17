@@ -9,7 +9,7 @@ function Principal()
         case 1
            MetodosCerrados()
         case 2
-           MenMetodosAbiertos()
+           MetodosAbiertos()
         case 3
            MenMetodosMatriciales()
         case 4
@@ -17,9 +17,9 @@ function Principal()
         case 5
            MenMetodosEDO()
         case 6
-           MenMetodosAbiertos()    
+           MenMetodosAbiertos()
         case 7
-           #opt=questdlg("¿Seguro desea salir?", "Salir", "Si", "No") 
+           #opt=questdlg("ï¿½Seguro desea salir?", "Salir", "Si", "No")
            #if(opt=="No")
           #    Men1=0
           # endif
@@ -36,25 +36,16 @@ endfunction
 
 
  
- 
- 
-
-
- 
-
- 
-
- 
- function MenMetodosEDO()     
+ function MenMetodosEDO()
    try
     Men5=0;
     while(Men5!=4)
       Men5=menu("Menu Metodos Solucion EDO","Metodo de euler",
-      "Polinomio de interpolación de lagrange", "Runge-Kutta","Atras")
-            
+      "Polinomio de interpolaciï¿½n de lagrange", "Runge-Kutta","Atras")
+
     endwhile
    catch
     msgbox("Error en el menu de metodos Abiertos","Error")
    end_try_catch
-   
+
  endfunction
