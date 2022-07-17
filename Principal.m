@@ -13,7 +13,7 @@ function Principal()
         case 3
            MenMetodosMatriciales()
         case 4
-           MenMetodosAjusteCurva()
+           MetodosAjusteCurva()
         case 5
            MenMetodosEDO()
         case 6
@@ -39,36 +39,11 @@ endfunction
  
  
 
-function MenMetodosAbiertos()     
-   try
-    Men2=0;
-    while(Men2!=4)
-      Men2=menu("Menu Metodos Abiertos","Metodo de Newton Raphson",
-      "Punto fijo", "Metodo de la secante","Atras")
-            
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-   
- endfunction
 
  
 
  
-function MenMetodosAjusteCurva()     
-   try
-    Men4=0;
-    while(Men4!=4)
-      Men4=menu("Menu Ajuste de Curva","Polinomio de interpolación de newton",
-      "Polinomio de interpolación de lagrange", "Regresion polinomial por minimo cuadrado","Atras")
-            
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-   
- endfunction
+
  
  function MenMetodosEDO()     
    try
