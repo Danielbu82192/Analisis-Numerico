@@ -13,7 +13,7 @@ function MetodosAbiertos()
             Secante()
         endswitch
       catch
-        waitfor(msgbox("Error en el menu de Metodos Abiertos","Error"))
+        waitfor(msgbox("Error  en el menu de Metodos Abiertos","Error"))
       end_try_catch
    endwhile
 

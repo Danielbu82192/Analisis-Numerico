@@ -10,7 +10,7 @@ function MetodosAjusteCurva()
             Newton
             
            otherwise
-           msgbox("Debe seleccionar una opcion correcta")
+           msgbox("Debe seleccionar  una opcion correcta")
     
         endswitch
       catch
