@@ -1,16 +1,16 @@
 function MetodosAjusteCurva()    
-    Men4=0;
-    while(Men4!=4) 
+    Men=0;
+    while(Men!=4) 
       try
-        Men4=menu("Menu Ajuste de Curva","Polinomio de interpolación de newton",
+        Men=menu("Menu Ajuste de Curva","Polinomio de interpolación de newton",
         "Polinomio de interpolación de lagrange", "Regresion polinomial por minimo cuadrado","Atras")
         
-        switch(Men4)      
+        switch(Men)      
           case 1
             Newton
             
            otherwise
-           msgbox("Debe seleccionar  una opcion correcta")
+           msgbox("Debe seleccionar una opcion correcta")
     
         endswitch
       catch
