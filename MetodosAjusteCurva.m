@@ -11,7 +11,7 @@ function MetodosAjusteCurva()
           case 2
             lagrange();
           case 3
-
+            MinimosCuadrados();
           case 4
             Principal();
           case 5
@@ -19,13 +19,14 @@ function MetodosAjusteCurva()
         endswitch
       catch err
         waitfor(msgbox(err.identifier, err.message))
-        msgbox("Error en el menu de metodos Abiertos","Error")
+        msgbox("Error en el menu de metodos de ajuste de curva","Error")
       end_try_catch
     endwhile
  endfunction
 
  #Codigo Polinomio de interpolacion de newton
  function Newton()
+   try
    clc;
    fprintf ("***Polinomio de interpolacion de newton***\n");
    #x=PedirVectores("x - Independiente");
@@ -97,7 +98,36 @@ function MetodosAjusteCurva()
     if(tabla == true)
       mostrarPolNewton(x_i,y_i);
     endif
-  endwhile
+  endwhile 
+  catch err
+        waitfor(msgbox(err.identifier, err.message))
+        msgbox("Error en newton","Error")
+        end_try_catch
+ endfunction
+ 
+  ## VALIDACION DATOS
+ function dato=ValidarUndato(msg)
+   ban=1;
+   while ban!=0
+     try
+       dato{1,1}="";
+       dato=inputdlg(sprintf('Ingrese el dato inicial %s',msg));
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+        waitfor(msgbox ("Debe ingresar un dato","Alerta"));
+        ban=1;
+       else  if(isnan(str2double(dato{1,1})))
+        waitfor(msgbox ("El dato debe ser numerico","Alerta"));
+      else
+        dato=str2double(dato{1,1});
+        ban=0;
+      endif
+      endif
+     catch err
+
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox ("Error al ingresar el dato","Error"))
+     end_try_catch
+   endwhile
  endfunction
  
  function M2(x)
@@ -135,6 +165,7 @@ function mostrarPolNewton(x,y)
 endfunction
  #Codigo Polinomio de interpolación de lagrange
 function lagrange()
+  try
   #x=PedirVectores("x");
   #y=PedirVectores("y");
    x=partirCadena("0 0.2 0.4 0.6")
@@ -175,7 +206,88 @@ function lagrange()
       eval(['funct = @(x) (' cadena ');']);
       asd=feval(funct,0.4);
 
+  catch err
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox("Error en Lagrange","Error"))
+        end_try_catch
 endfunction
+
+#Minimos cuadrados
+function MinimosCuadrados()
+  try
+    
+  #x=PedirVectores("x");
+  #y=PedirVectores("y");
+   #n=ValidarUndato("n")
+   x=partirCadena("-50 -30 0 60 90 110")
+   y=partirCadena("1270 1280 1350 1480 1580 1700")
+   n=3;
+   da=0;
+   dy=0;
+   xa=[];
+   ya=[];
+   gElevada=n*2;
+   j=2;   
+   x=invertirTipoVector(x);
+   
+   y=invertirTipoVector(y);
+   xa=[x,sum(x)]
+   ya=[y,sum(y)]
+   Tablax{1}=xa;  
+   for i=2:gElevada
+     xas=x.^i;
+     xaux=[xas, sum(xas)]
+     Tablax{j}=xaux;
+     j=j+1;
+   endfor
+   
+   
+   Tablaxel={};  
+   for i=1:length(Tablax) 
+     vec=Tablax{i};  
+     vec=vec.*ya;
+     vec(length(vec))=0;
+     
+     vec(length(vec))=sum(vec);
+     Tablaxel{i}=vec;
+   endfor
+   c=invertirTipoVector(x) ; 
+   for i=1:n+1
+    for j=1:n+1
+      if(i==1&&j==1)      
+        Matriz(1,1)=length(x);
+      else
+        a=i+j-1;
+        M=Tablax{i+j-2}
+        Matriz(i,j)=M(length(M))
+      endif
+    endfor
+   endfor
+   vectorB=[];
+   vectorB(1)=sum(y);
+   for i=2:n+1
+     M=Tablaxel{i-1}
+     vectorB=[vectorB;M(length(M))]
+   endfor 
+   
+   sol=inv(Matriz)*vectorB
+   
+  catch   err
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox("Error en minimos cuadrados","Error"))
+  end_try_catch
+endfunction
+
+
+function Nvec=invertirTipoVector(vec)
+  try
+    Nvec=[];
+    for i=1:length(vec)
+      Nvec=[Nvec,str2double(vec{i})]
+    endfor
+  catch
+  end_try_catch
+  endfunction
 
   #Obtener valores vector
 function dato=PedirVectores(msg)
@@ -209,6 +321,7 @@ function dato=PedirVectores(msg)
  endfunction
  #Partir cadena
 function palabras = partirCadena(cadena)
+  try
 resto = cadena;
 palabras = {};
 i = 1;
@@ -217,6 +330,10 @@ while length(resto) ~=0
 palabras{i} = primera;
 i = i+1;
 endwhile
+  catch err
+        waitfor(msgbox(err.identifier, err.message))
+        msgbox("Error","Error")
+        end_try_catch
 endfunction
 
  #SubMenu Ajuste de curva
@@ -244,3 +361,5 @@ function visualizar = menuAjuste()
 
   visualizar = [grafica, tabla, cadenaFinal,atras];
 endfunction
+
+
