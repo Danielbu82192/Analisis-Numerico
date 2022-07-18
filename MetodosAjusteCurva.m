@@ -116,7 +116,7 @@ function lagrange()
      val=0;
      try 
        dato{1,1}="";
-       dato=inputdlg(sprintf('Tamaño de la matriz %s separados por espacio:',msg))
+       dato=inputdlg(sprintf('El vector %s separados por espacio:',msg))
        expresion='[\d+\s+\d]';
        val=regexp(dato{1,1}, expresion, 'match');
        if(isnan(dato{1,1})||isempty(dato{1,1}))
