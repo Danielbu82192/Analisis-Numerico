@@ -22,7 +22,7 @@ function MetodosCerrado()
    endwhile
  endfunction
 
-## METODO BISECCIÓN
+## METODO BISECCIÃN
  function Biseccion()
   clc;
   printf ("Metodo Biseccion\n");
