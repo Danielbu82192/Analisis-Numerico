@@ -20,14 +20,25 @@ function MetodosMatriciales()
  function Cramer()
    #matrizA = PedirMatriz();
    #matrizB = PedirMatrizB();
-   crearmatriz()
+   try
+    n = ValidarUndatoFila("(n)");
+    m = ValidarUndatoCol("(m)");
+
+    crearmatriz(n,m);
+    crearmatrizB(n)
+
+   catch
+    waitfor(msgbox("Error en Cramer","Error"));
+   end_try_catch
+
+   #da = det(crearmatriz(n,m))
 
 endfunction
 
-function matriz=crearmatriz()
+function matriz=crearmatriz(n,m)
 
-  n = ValidarUndatoFila("(n)")
-  m = ValidarUndatoCol("(m)")
+  #n = ValidarUndatoFila("(n)");
+  #m = ValidarUndatoCol("(m)");
 
   for i=1:n
     for j=1:m
@@ -35,11 +46,22 @@ function matriz=crearmatriz()
       A(i,j) = input('');
     endfor
   endfor
-
   A
-
 endfunction
 
+function matriz=crearmatrizB(n)
+
+  #n = ValidarUndatoFila("(n)");
+  #m = ValidarUndatoCol("(m)");
+
+  for i=1:n
+    for j=1:1
+      disp(['Ingrese el Elemento (',num2str(i),',',num2str(j),')'])
+      B(i,j) = input('');
+    endfor
+  endfor
+  B
+endfunction
 
  function Matriz=PedirMatriz()
    dato=ValidarUndato();
