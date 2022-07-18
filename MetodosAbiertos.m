@@ -10,6 +10,9 @@ function MetodosAbiertos()
           case 1
             N_R();
           case 2
+            PF()
+          case 3
+            Secante()
             PF();
           case 3
             Secante();
@@ -249,6 +252,11 @@ endfunction
 
 #Metodo de la Secante
 function Secante()
+  try
+    E=100;
+    #xi=0;
+    #func(xi)=0;
+    #fdev(xi)=0;
   clc;
   printf ("Metodo Secante\n");
   x=[];
@@ -273,6 +281,17 @@ function Secante()
       xi_s = xi - (((xi_1 - xi)*fcn1)/(fcn_1-fcn1));
       ant = xi;
 
+      fcn_1 = feval(func,xi_1); %funcion evaluada en x-1
+      fcn1 = feval(func,xi); %funcion evaluada en x0
+      derf = (fcn_1 - fcn1) / (xi_1 - xi);
+
+      if(i ~= 0)
+        E = (abs((xi_s - ant)/xi_s))*100;
+      endif
+      #xi_s = xi - (fcn_1/derf);
+      xi_s = xi - (((xi_1 - xi)*fcn1)/(fcn_1-fcn1));
+      ant = xi;
+
       xvect(i+1) = xi;
       fcnvec(i+1) = fcn_1;
       dervec(i+1) = derf;
@@ -280,6 +299,9 @@ function Secante()
 
       xi_1 = xi;
       xi = xi_s;
+      i++;
+    endwhile
+    MostrarSecante(xvect,fcnvec,dervec,Evect)
       x=[x,xi_1];
       y=[y,xi];
       i++;
@@ -299,7 +321,6 @@ function Secante()
     if(tabla == true)
         MostrarSecante(xvect,fcnvec,dervec,Evect)
     endif
-
   catch
     waitfor(msgbox("Error en Metodo la Secante","Error"));
   end_try_catch
@@ -310,12 +331,20 @@ function funct=PedirEcuacion()
    ban=1;
    while ban!=0
      try
+      funcInput=inputdlg ("Ingrese la Funcion")
+      eval(['funct = @(x) (' funcInput{1,1} ');']);
+      x=[1 1 1 1 1 1];
+      funct(x);
       funcInput=inputdlg ("Ingrese la Funcion");
       eval(['funct = @(x) (' funcInput{1,1} ');']);
       ban=0;
      catch err
       ban=1;
       if(err.identifier=="Octave:undefined-function")
+       waitfor(msgbox ("La funcion solo recibe una variable","Error"))
+     else
+        waitfor(msgbox("Error al ingresar la funcion","Error"))
+      endif
        waitfor(msgbox ("La funcion solo recibe una variable","Error"));
      else
         waitfor(msgbox("Error al ingresar la funcion","Error"));
@@ -370,23 +399,102 @@ function funct=PedirEcuacion()
    endwhile
  endfunction
 
+ function dato=ValidarPrimerdato(msg)
+   ban=1;
+   while ban!=0
+     try
+       dato{1,1}="";
+       dato=inputdlg(sprintf('Ingrese el dato de %s',msg))
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+        waitfor(msgbox ("Debe ingresar un dato","Alerta"))
+        ban=1;
+       else  if(isnan(str2double(dato{1,1})))
+        waitfor(msgbox ("El dato debe ser numerico","Alerta"))
+      else
+        dato=str2double(dato{1,1})
+        ban=0;
+      endif
+      endif
+     catch err
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox ("Error al ingresar el dato","Error"))
+     end_try_catch
+   endwhile
+ endfunction
+
+ function dato=ValidarSegundodato(msg)
+   ban=1;
+   while ban!=0
+     try
+       dato{1,1}="";
+       dato=inputdlg(sprintf('Ingrese el dato de %s',msg))
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+        waitfor(msgbox ("Debe ingresar un dato","Alerta"))
+        ban=1;
+       else  if(isnan(str2double(dato{1,1})))
+        waitfor(msgbox ("El dato debe ser numerico","Alerta"))
+      else
+        dato=str2double(dato{1,1})
+        ban=0;
+      endif
+      endif
+     catch err
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox ("Error al ingresar el dato","Error"))
+     end_try_catch
+   endwhile
+ endfunction
+
+#Funcion para mostrar Metodo de la Secante
+function MostrarSecante(xvect,fcnvec,dervec,Evect)
+Men1=0;
+  while(Men1!=4)
+    try
+      Men1=menu("Menu Mostrar",
+      "Tabla", "Valor de la raíz con error menor 0.001","Todo",  "Atras")
+      switch(Men1)
+        case 1
+           answer=[1,xvect(1),fcnvec(1),dervec(1),100000];
+
 #Funcion para mostrar Metodo de la Secante
 function MostrarSecante(xvect,fcnvec,dervec,Evect)
     try
            answer=[1,xvect(1),fcnvec(1),dervec(1),100000];
-
            for i=2:length(xvect)
             newLine = [i,xvect(i),fcnvec(i),dervec(i),Evect(i)];
             before = answer;
             answer = [before; newLine];
            endfor
+           answer=num2str(answer)
            answer=num2str(answer);
            newLine=[" i |"," X |"," F(xi) |","F_d(xi)"," Error "];
            before = answer;
            answer = [newLine; before];
            waitfor(msgbox(num2str(answer),"Tabla"))
+        case 2
+           raiz=xvect(length(xvect));
+           waitfor(msgbox(sprintf("La raiz mas proxima es %d",raiz),"Raiz"))
+        case 3
+           answer=[1,xvect(1),fcnvec(1),dervec(1),100000];
+           for i=2:length(xvect)
+           newLine = [i,xvect(i),fcnvec(i),dervec(i),Evect(i)];
+           before = answer;
+           answer = [before; newLine];
+         endfor
+          answer=num2str(answer);
+           newLine=[" i |"," X |"," F(xi) |"," F_d(xi) |"," Error "];
+           before = answer;
+           answer = [newLine; before];
+           waitfor(msgbox(num2str(answer),"Tabla"))
+           raiz=xvect(length(xvect));
+           waitfor(msgbox(sprintf("La raiz mas proxima es %d",raiz),"Raiz"))
+          case 4
+        otherwise
+           waitfor(msgbox("Debe seleccionar una opcion correcta"))
+      endswitch
     catch err
       waitfor(msgbox(err.identifier, err.message));
       waitfor(msgbox("Error en el menu principal","Error"));
     end_try_catch
+  endwhile
 endfunction
