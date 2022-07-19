@@ -1,28 +1,31 @@
+#MENU PRINCIPAL
+
 function Principal()
+  fprintf ("***Taller Menu principal***\n");
   Men1=0;
-  while(Men1!=7)
+  while(Men1!=6)
     try
       Men1=menu("Menu principal","Metodos Cerrados",
-      "Metdoso Abiertos", "Metodos Matriciales","Ajuste de Curva",
-      "Metodos Solucion EDO", "Integrales Numericas", "Salir")
+      "Metodos Abiertos", "Metodos Matriciales","Ajuste de Curva",
+      "Metodos Solucion EDO", "Salir");
       switch(Men1)
         case 1
-           MetodosCerrados()
+           MetodosCerrados();
+           Men1=6;
         case 2
-           MetodosAbiertos()
+           MetodosAbiertos();
+           Men1=6;
         case 3
-           MenMetodosMatriciales()
+           MenMetodosMatriciales();
+           Men1=6;
         case 4
-           MenMetodosAjusteCurva()
+           MetodosAjusteCurva();
+           Men1=6;
         case 5
-           MenMetodosEDO()
+           MenMetodosEDO();
+           Men1=6;
         case 6
-           MenMetodosAbiertos()
-        case 7
-           #opt=questdlg("�Seguro desea salir?", "Salir", "Si", "No")
-           #if(opt=="No")
-          #    Men1=0
-          # endif
+           printf ("Sistema finalizado\n");
         otherwise
            msgbox("Debe seleccionar una opcion correcta")
       endswitch
@@ -33,50 +36,3 @@ function Principal()
    endwhile
 
 endfunction
-
-
-
-
-
-
-function MenMetodosAbiertos()
-   try
-    Men2=0;
-    while(Men2!=4)
-      Men2=menu("Menu Metodos Abiertos","Metodo de Newton Raphson",
-      "Punto fijo", "Metodo de la secante","Atras")
-
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-
- endfunction
-
- 
-   try
-    Men4=0;
-    while(Men4!=4)
-      Men4=menu("Menu Ajuste de Curva","Polinomio de interpolaci�n de newton",
-      "Polinomio de interpolaci�n de lagrange", "Regresion polinomial por minimo cuadrado","Atras")
-
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-
- endfunction
-
- function MenMetodosEDO()
-   try
-    Men5=0;
-    while(Men5!=4)
-      Men5=menu("Menu Metodos Solucion EDO","Metodo de euler",
-      "Polinomio de interpolaci�n de lagrange", "Runge-Kutta","Atras")
-
-    endwhile
-   catch
-    msgbox("Error en el menu de metodos Abiertos","Error")
-   end_try_catch
-
- endfunction
