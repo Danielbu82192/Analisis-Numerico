@@ -45,13 +45,19 @@ function EULER()
 endfunction
 
 function EULEROR1()
-  try
+  try 
     func=PedirFormula();
     x0=ValidarUndato("x");
     y0=ValidarUndato("y");    
     h=ValidarUndato("h");  
     a=ValidarUndato("Inicio");
-    f=ValidarUndato("Finalizacion");     
+    f=ValidarUndato("Finalizacion");      
+    #func=@(x,y)(-1.5*y);
+    #x0=0;
+    #y0=0.5;    
+    #h=0.5;  
+    #a=0;
+    #f=2;     
     x=x0;
     y=y0; 
     i=0;
@@ -66,16 +72,15 @@ function EULEROR1()
       x=x+h;
       i++;
     endwhile   
-    Matriz
-  catch err
-        waitfor(msgbox(err.identifier, err.message))
+    Matriz 
+  catch 
       waitfor(msgbox("Error en el menu de EULER","Error"))
   end_try_catch
   
  endfunction
  
 function EULEROR2()
-  try
+  try 
     func1=PedirFormula2();
     func2=PedirFormula2();
     x0=ValidarUndato("x");
@@ -84,6 +89,14 @@ function EULEROR2()
     h=ValidarUndato("h");  
     a=ValidarUndato("Inicio");    
     f=ValidarUndato("Finalizacion");   
+    #func1=@(x,y,z)((1999*y)+(2999*z));
+    #func2=@(x,y,z)((-2000*y)+(-3000*z));
+    #x0=0;
+    #y0=1;  
+    #z0=1;      
+    #h=0.05;  
+    #a=0;
+    #f=0.2;     
     x=x0;
     y=y0; 
     z=z0; 
@@ -134,13 +147,19 @@ function RK4()
 endfunction
   
 function RK4Orden1()
-  try
+  try 
     func=PedirFormula();
     x0=ValidarUndato("x");
     y0=ValidarUndato("y");    
     h=ValidarUndato("h");  
     a=ValidarUndato("Inicio");
-    f=ValidarUndato("Finalizacion");     
+    f=ValidarUndato("Finalizacion");  
+    #func=@(x,y)(-1.5*y);
+    #x0=0;
+    #y0=0.5;    
+    #h=0.5;  
+    #a=0;
+    #f=2;    
     x=x0;
     y=y0; 
     i=0;
@@ -169,7 +188,7 @@ function RK4Orden1()
  
  
 function RK4Orden2()
-  try
+  try 
     func1=PedirFormula2();
     func2=PedirFormula2();
     x0=ValidarUndato("x");
@@ -178,6 +197,14 @@ function RK4Orden2()
     h=ValidarUndato("h");  
     a=ValidarUndato("Inicio");    
     f=ValidarUndato("Finalizacion");     
+    #func1=@(x,y,z)((-0.6*z)-(8*y));
+    #func2=@(x,y,z)(z);
+    #x0=0;
+    #y0=4; 
+    #z0=0;    
+    #h=0.5;  
+    #a=0;
+    #f=2;    
     x=x0;
     y=y0; 
     z=z0;
