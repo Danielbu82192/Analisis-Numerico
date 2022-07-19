@@ -29,10 +29,10 @@ function MetodosAjusteCurva()
    try
    clc;
    fprintf ("***Polinomio de interpolacion de newton***\n");
-   #x=PedirVectores("x - Independiente");
-   #y=PedirVectores("y - Dependiente");
-   x=partirCadena("0 600 1200 1800 2400")
-   y=partirCadena("350 247 185 140 105")
+   x=PedirVectores("x - Independiente");
+   y=PedirVectores("y - Dependiente");
+ #  x=partirCadena("0 600 1200 1800 2400")
+  # y=partirCadena("350 247 185 140 105")
    x_i =[];
    y_i =[];
    matriz={};
@@ -72,21 +72,20 @@ function MetodosAjusteCurva()
      y_i =[y_i, k];
    endfor
    cadena=y{1};
-    
-    M2(matriz);
+
   for i=1:length(matrizF)
     cadena=[cadena "+ " mat2str(matrizF{i}) ];
-    for j=1:i 
-      cadena=[cadena  "*(x-" x{j} ")" ]; 
+    for j=1:i
+      cadena=[cadena  "*(x-" x{j} ")" ];
     endfor
   endfor
-    eval(['funct = @(x) (' cadena ');']);
     atras=true;
-   while(atras)   
+   while(atras)
     mostrar = menuAjuste();
-    atras = mostrar(4);
+    atras = mostrar(5);
     grafica = mostrar(1);
     tabla = mostrar (2);
+    evaluar = mostrar (4)
     resultadoCadena = mostrar (3);
     if(grafica == true)
      plot(x_i,y_i);
@@ -96,15 +95,44 @@ function MetodosAjusteCurva()
       cadena
     endif
     if(tabla == true)
-      mostrarPolNewton(x_i,y_i);
+      M2(matriz,x_i,y_i);
     endif
-  endwhile 
+    if(evaluar == true)
+      n=ValidarPunto("n");
+      f=eval(['funct = @(x) (' cadena ');']);
+      resul=feval(f,n);
+      fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
+    endif
+  endwhile
   catch err
         waitfor(msgbox(err.identifier, err.message))
         msgbox("Error en newton","Error")
         end_try_catch
  endfunction
- 
+
+ function dato=ValidarPunto(msg)
+   ban=1;
+   while ban!=0
+     try
+       dato{1,1}="";
+       dato=inputdlg(sprintf('Ingrese punto a evaluar %s',msg));
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+        waitfor(msgbox ("Debe ingresar un dato","Alerta"));
+        ban=1;
+       else  if(isnan(str2double(dato{1,1})))
+        waitfor(msgbox ("El dato debe ser numerico","Alerta"));
+      else
+        dato=str2double(dato{1,1});
+        ban=0;
+      endif
+      endif
+     catch err
+
+        waitfor(msgbox(err.identifier, err.message))
+        waitfor(msgbox ("Error al ingresar el dato","Error"))
+     end_try_catch
+   endwhile
+ endfunction
   ## VALIDACION DATOS
  function dato=ValidarUndato(msg)
    ban=1;
@@ -129,24 +157,25 @@ function MetodosAjusteCurva()
      end_try_catch
    endwhile
  endfunction
- 
- function M2(x)
+
+ function M2(x,x_i,y_i)
+          mostrarPolNewton(x_i,y_i);
            resultado=[];
            newLine=[];
            for i=1:length(x)
              newLine=[];
              val=x{i};
-             for j=1:length(x) 
+             for j=1:length(x)
              if(j<=length(val))
               newLine = [newLine; val{j}];
             else
-              newLine = [newLine;0]
+              newLine = [newLine;0];
              endif
              endfor
              before = resultado;
              resultado = [before, newLine];
            endfor
-           resultado=num2str(resultado);  
+           resultado=num2str(resultado);
            waitfor(msgbox(num2str(resultado),"Tabla"));
 endfunction
  #Mostrar valores Polinomio de interpolación de newton
@@ -166,10 +195,13 @@ endfunction
  #Codigo Polinomio de interpolación de lagrange
 function lagrange()
   try
-  #x=PedirVectores("x");
-  #y=PedirVectores("y");
-   x=partirCadena("0 0.2 0.4 0.6")
-   y=partirCadena("15 21 30 51")
+   clc;
+  x=PedirVectores("x");
+  y=PedirVectores("y");
+  # x=partirCadena("0 0.2 0.4 0.6");
+ #  y=partirCadena("15 21 30 51");
+   x_i =[];
+   y_i =[];
    fun=[];
    allFun={};
    allcalcu={};
@@ -184,13 +216,13 @@ function lagrange()
        datoV=str2double(x{j});
        if(val!=datoV)
        if(ban==1)
-        fun=[fun,sprintf("(x-%d)",datoV)]
-        ban=0
+        fun=[fun,sprintf("(x-%d)",datoV)];
+        ban=0;
        else
-        fun=[fun sprintf("*(x-%d)",datoV)]
+        fun=[fun sprintf("*(x-%d)",datoV)];
        endif
-       a=(val-datoV)
-       cactu=cactu*(a)
+       a=(val-datoV);
+       cactu=cactu*(a);
        endif
      endfor
      allFun{i}=fun;
@@ -198,63 +230,107 @@ function lagrange()
        datoy=str2double(y{i});
      allcalcuxY{i}=datoy/cactu;
    endfor
-   cadena=[];
-   cadena=[cadena sprintf("[%d*[%s]]",allcalcuxY{1},allFun{1})]
-   for i=2:length(allFun)
-    cadena=[cadena sprintf("+[%d*[%s]]",allcalcuxY{i},allFun{i})]
-   endfor
-      eval(['funct = @(x) (' cadena ');']);
-      asd=feval(funct,0.4);
 
-  catch err
+   cadena=[];
+   cadena=[cadena sprintf("[%d*[%s]]",allcalcuxY{1},allFun{1})];
+   for i=2:length(allFun)
+    cadena=[cadena sprintf("+[%d*[%s]]",allcalcuxY{i},allFun{i})];
+   endfor
+   for j=1:length(y)
+     q=str2double(x{j});
+     x_i =[x_i, q];
+   endfor
+   for j=1:length(y)
+     k=str2double(y{j});
+     y_i =[y_i, k];
+   endfor
+
+   atras=true;
+   while(atras)
+    mostrar = menuAjuste();
+    atras = mostrar(5);
+    grafica = mostrar(1);
+    tabla = mostrar (2);
+    evaluar = mostrar (4)
+    resultadoCadena = mostrar (3);
+    if(grafica == true)
+     plot(x_i,y_i);
+    endif
+    if(resultadoCadena == true)
+      fprintf("El polinomio es: \n");
+      cadena
+    endif
+    if(tabla == true)
+       mostrarLagrange(allFun,allcalcu);
+    endif
+    if(evaluar == true)
+      n=ValidarPunto("n");
+      f=eval(['funct = @(x) (' cadena ');']);
+      resul=feval(f,n);
+      fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
+    endif
+  endwhile
+
+  catch
         waitfor(msgbox(err.identifier, err.message))
         waitfor(msgbox("Error en Lagrange","Error"))
         end_try_catch
 endfunction
 
+function mostrarLagrange(allFun,allcalcu)
+  clc;
+  polinomio=[];
+  for i=1:length(allFun)
+    Lx =[sprintf("1/%d*[%s]",allcalcu{i},allFun{i})]
+    polinomio =[polinomio,Lx];
+  endfor
+  polinomio
+endfunction
+
 #Minimos cuadrados
 function MinimosCuadrados()
   try
-    
+  clc;
   #x=PedirVectores("x");
   #y=PedirVectores("y");
-   #n=ValidarUndato("n")
-   x=partirCadena("-50 -30 0 60 90 110")
-   y=partirCadena("1270 1280 1350 1480 1580 1700")
+  #n=ValidarUndato("n");
+   x=partirCadena("-50 -30 0 60 90 110");
+   y=partirCadena("1270 1280 1350 1480 1580 1700");
+   matrizValores={};
    n=3;
    da=0;
    dy=0;
    xa=[];
    ya=[];
    gElevada=n*2;
-   j=2;   
+   j=2;
    x=invertirTipoVector(x);
-   
+
    y=invertirTipoVector(y);
-   xa=[x,sum(x)]
-   ya=[y,sum(y)]
-   Tablax{1}=xa;  
+   xa=[x,sum(x)];
+   ya=[y,sum(y)];
+   Tablax{1}=xa;
    for i=2:gElevada
      xas=x.^i;
      xaux=[xas, sum(xas)]
      Tablax{j}=xaux;
+     matrizValores{i-1}=xaux
      j=j+1;
    endfor
-   
-   
-   Tablaxel={};  
-   for i=1:length(Tablax) 
-     vec=Tablax{i};  
+
+   Tablaxel={};
+   for i=1:length(Tablax)
+     vec=Tablax{i};
      vec=vec.*ya;
      vec(length(vec))=0;
-     
+
      vec(length(vec))=sum(vec);
      Tablaxel{i}=vec;
    endfor
-   c=invertirTipoVector(x) ; 
+   c=invertirTipoVector(x) ;
    for i=1:n+1
     for j=1:n+1
-      if(i==1&&j==1)      
+      if(i==1&&j==1)
         Matriz(1,1)=length(x);
       else
         a=i+j-1;
@@ -268,22 +344,64 @@ function MinimosCuadrados()
    for i=2:n+1
      M=Tablaxel{i-1}
      vectorB=[vectorB;M(length(M))]
-   endfor 
-   
+
+   endfor
+
+
    sol=inv(Matriz)*vectorB
-   
-  catch   err
+
+
+    atras=true;
+   while(atras)
+    mostrar = menuAjuste();
+    atras = mostrar(5);
+    grafica = mostrar(1);
+    tabla = mostrar (2);
+    evaluar = mostrar (4)
+    resultadoCadena = mostrar (3);
+    if(grafica == true)
+     plot(xa,ya);
+    endif
+    if(resultadoCadena == true)
+      fprintf("El polinomio es: \n");
+
+    endif
+    if(tabla == true)
+   #   mostrarMinimos(matrizValores);
+    endif
+    if(evaluar == true)
+      n=ValidarPunto("n");
+      f=eval(['funct = @(x) (' cadena ');']);
+      resul=feval(f,n);
+      fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
+    endif
+  endwhile
+
+
+
+  catch err
         waitfor(msgbox(err.identifier, err.message))
         waitfor(msgbox("Error en minimos cuadrados","Error"))
   end_try_catch
 endfunction
 
+function mostrarMinimos(x)
+     resultado=[];
+           newLine=[];
+           for i=1:length(x)
+              newLine = [newLine; x{i}];
+             before = resultado;
+             resultado = [before, newLine];
+           endfor
+           resultado=num2str(resultado);
+           waitfor(msgbox(num2str(resultado),"Tabla"));
+endfunction
 
 function Nvec=invertirTipoVector(vec)
   try
     Nvec=[];
     for i=1:length(vec)
-      Nvec=[Nvec,str2double(vec{i})]
+      Nvec=[Nvec,str2double(vec{i})];
     endfor
   catch
   end_try_catch
@@ -295,8 +413,8 @@ function dato=PedirVectores(msg)
    while ban!=0
      val=0;
      try
-       dato{1,1}=""; 
-       dato=inputdlg(sprintf('Valores de la matriz %s separados por espacio:',msg)); 
+       dato{1,1}="";
+       dato=inputdlg(sprintf('Valores de la matriz %s separados por espacio:',msg));
        expresion='[\d+\s+\d]';
        val=regexp(dato{1,1}, expresion, 'match');
        if(isnan(dato{1,1})||isempty(dato{1,1}))
@@ -338,12 +456,13 @@ endfunction
 
  #SubMenu Ajuste de curva
 function visualizar = menuAjuste()
-  #inicio de variables 
+  #inicio de variables
   grafica = false;
   tabla = false;
   cadenaFinal = false;
+  evaluar = false;
   atras=true;
-  opcion = menu("Resultado a ver", "1. Gráfica\n","2. Mostrar tabla\n", "3. Valor cadena Final \n", "4. Todo\n", "5. Atras\n");
+  opcion = menu("Resultado a ver", "1. Gráfica\n","2. Mostrar tabla\n", "3. Valor cadena Final \n", "4.Evaluar en un punto", "5. Todo\n", "6. Atras\n");
 
   if(opcion == 1)
     grafica = true;
@@ -352,14 +471,17 @@ function visualizar = menuAjuste()
   elseif(opcion == 3)
     cadenaFinal = true;
   elseif(opcion == 4)
+    evaluar = true;
+  elseif(opcion == 5)
     grafica = true;
     tabla = true;
-    cadenaFinal = true;    
-  elseif(opcion == 5)  
+    cadenaFinal = true;
+    evaluar =true;
+  elseif(opcion == 6)
     atras=false;
   endif
 
-  visualizar = [grafica, tabla, cadenaFinal,atras];
+  visualizar = [grafica, tabla, cadenaFinal,evaluar,atras];
 endfunction
 
 
