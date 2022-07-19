@@ -3,7 +3,8 @@ function mostrar = menuOpcion()
   grafica = false;
   tabla = false;
   vraiz = false;
-  opcion = menu("Resultado a ver", "1. Gráfica\n","2. Mostrar tabla\n", "3. Valor de la raíz con error \n", "4. Todo\n");
+  atras=false;
+  opcion = menu("Resultado a ver", "1. Gráfica\n","2. Mostrar tabla\n", "3. Valor de la raíz con error \n", "4. Todo\n", "5.Salir");
 
   if(opcion == 1)
     grafica = true;
@@ -15,8 +16,10 @@ function mostrar = menuOpcion()
     grafica = true;
     tabla = true;
     vraiz = true;
+  elseif(opcion == 5)
+    atras = true;
   endif
 
-  mostrar = [grafica, tabla, vraiz];
+  mostrar = [grafica, tabla, vraiz, atras];
  endfunction
 
