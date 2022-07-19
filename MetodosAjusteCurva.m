@@ -291,11 +291,11 @@ endfunction
 function MinimosCuadrados()
   try
   clc;
-  #x=PedirVectores("x");
-  #y=PedirVectores("y");
-  #n=ValidarUndato("n");
-   x=partirCadena("-50 -30 0 60 90 110");
-   y=partirCadena("1270 1280 1350 1480 1580 1700");
+   x=PedirVectores("x");
+   y=PedirVectores("y");
+   n=ValidarUndato("n");
+   #x=partirCadena("-50 -30 0 60 90 110");
+   #y=partirCadena("1270 1280 1350 1480 1580 1700");
    matrizValores={};
    n=3;
    da=0;
@@ -312,9 +312,9 @@ function MinimosCuadrados()
    Tablax{1}=xa;
    for i=2:gElevada
      xas=x.^i;
-     xaux=[xas, sum(xas)]
+     xaux=[xas, sum(xas)];
      Tablax{j}=xaux;
-     matrizValores{i-1}=xaux
+     matrizValores{i-1}=xaux;
      j=j+1;
    endfor
 
@@ -334,24 +334,20 @@ function MinimosCuadrados()
         Matriz(1,1)=length(x);
       else
         a=i+j-1;
-        M=Tablax{i+j-2}
-        Matriz(i,j)=M(length(M))
+        M=Tablax{i+j-2};
+        Matriz(i,j)=M(length(M));
       endif
     endfor
    endfor
    vectorB=[];
    vectorB(1)=sum(y);
    for i=2:n+1
-     M=Tablaxel{i-1}
-     vectorB=[vectorB;M(length(M))]
+     M=Tablaxel{i-1};
+     vectorB=[vectorB;M(length(M))];
 
    endfor
 
-
-   sol=inv(Matriz)*vectorB
-
-
-    atras=true;
+  atras=true;
    while(atras)
     mostrar = menuAjuste();
     atras = mostrar(5);
@@ -367,13 +363,10 @@ function MinimosCuadrados()
 
     endif
     if(tabla == true)
-   #   mostrarMinimos(matrizValores);
+        matrizValores
     endif
     if(evaluar == true)
-      n=ValidarPunto("n");
-      f=eval(['funct = @(x) (' cadena ');']);
-      resul=feval(f,n);
-      fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
+      sol=inv(Matriz)*vectorB
     endif
   endwhile
 

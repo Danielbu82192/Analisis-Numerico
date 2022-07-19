@@ -2,7 +2,7 @@
 function MetodosCerrado()
     fprintf ("***Metodos Cerrados***\n");
     Men=0;
-    while(Men!=3)
+    while(Men!=4)
     try
       Men=menu("Menu Metodos Cerrados","Metodo de Biseccion",
       "Metodo de falsa posicion", "Atras", "Salir");
@@ -13,8 +13,10 @@ function MetodosCerrado()
             falsaPosicion();
            case 3
             Principal();
+            Men=4
           case 4
             printf ("Sistema finalizado\n");
+
         endswitch
     catch
       waitfor(msgbox("Error en el menu de metodos cerrados","Error"))
@@ -80,11 +82,14 @@ function MetodosCerrado()
     ban=1;
     i=i+1;
   endwhile
-  %Mostrar datos
-   mostrar = menuOpcion();
+  atras=true;
+  while (atras)
+  % Mostrar datos
+    mostrar = menuOpcion();
     grafica = mostrar(1);
     tabla = mostrar (2);
     vraiz = mostrar (3);
+    atras = mostrar (4);
     if(grafica == true)
       plot(x,y);
     endif
@@ -96,6 +101,8 @@ function MetodosCerrado()
     if(tabla == true)
      Mostrar(Avec,Bvec,MNvec,sigvect,errorVect);
     endif
+  endwhile
+
     catch
       waitfor(msgbox("Error en Biseccion","Error"))
     end_try_catch
@@ -103,7 +110,7 @@ function MetodosCerrado()
 
  ## METODO FALSA POSICION
  function falsaPosicion()
-    clc;
+   clc;
    printf ("Metodo Falsa Posicion\n");
    x=[];
    y=[];
@@ -161,22 +168,27 @@ function MetodosCerrado()
     ban=1;
     i=i+1;
    endwhile
-     %Mostrar datos
-    mostrar = menuOpcion();
-    grafica = mostrar(1);
-    tabla = mostrar (2);
-    vraiz = mostrar (3);
-    if(grafica == true)
-      plot(x,y);
-    endif
-     if(vraiz == true)
-      raiz=MNvec(length(MNvec));
-      errorV=errorVect(length(errorVect));
-      fprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV);
-    endif
-    if(tabla == true)
-      MostrarFalsaPosicion(Avec,Bvec,Favec,Fbvec,MNvec,sigvect,errorVect);
-    endif
+    atras=true;
+    while (atras)
+       %Mostrar datos
+      mostrar = menuOpcion();
+      grafica = mostrar(1);
+      tabla = mostrar (2);
+      vraiz = mostrar (3);
+      atras = mostrar (4);
+      if(grafica == true)
+        plot(x,y);
+      endif
+       if(vraiz == true)
+        raiz=MNvec(length(MNvec));
+        errorV=errorVect(length(errorVect));
+        fprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV);
+      endif
+      if(tabla == true)
+        MostrarFalsaPosicion(Avec,Bvec,Favec,Fbvec,MNvec,sigvect,errorVect);
+      endif
+    endwhile
+
    catch
       waitfor(msgbox("Error en Punto fijo","Error"))
    end_try_catch

@@ -3,19 +3,20 @@ function MetodosMatriciales()
     while(Men3!=5)
     try
       Men3=menu("Menu Metodos Matriciales","Metodo de cramer",
-      "Metodo Sarrus","Metodo de Gauss-Seidel","Atras")
-
-    switch(Men3)
-      case 1
-        Cramer()
-      case 2
-        Sarrus()
-      case 3
-        Seidel()
-      case 4
-        Principal()
-    endswitch
-
+      "Metodo Sarrus","Metodo de Gauss-Seidel","Atras","Salir")
+      switch(Men3)
+        case 1
+          Cramer()
+        case 2
+          Sarrus()
+        case 3
+          Seidel()
+        case 4
+          Principal()
+          Men3=5
+        case 5
+          printf ("Sistema finalizado\n");
+      endswitch
      catch
       msgbox("Error en el menu de metodos Matriciales","Error")
      end_try_catch
@@ -24,6 +25,7 @@ function MetodosMatriciales()
 
 
  function Cramer()
+   clc;
    #matrizA = PedirMatriz();
    #matrizB = PedirMatrizB();
    try
@@ -122,6 +124,7 @@ endfunction
 
 #Metodo Sarrus
  function Sarrus()
+   clc;
    try
      n = ValidarUndatoFila("(n)");
      m = ValidarUndatoCol("(m)");
