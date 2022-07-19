@@ -34,7 +34,7 @@ function EULER()
            case 2
             EULEROR2();
            case 3
-            MetodoEDO();
+            MetodosEDO();
           case 4
             printf ("Sistema finalizado\n");
         endswitch
@@ -67,6 +67,8 @@ function EULEROR1()
       i++;
     endwhile   
     Matriz
+    Vx
+    Vy
   catch err
         waitfor(msgbox(err.identifier, err.message))
       waitfor(msgbox("Error en el menu de EULER","Error"))
@@ -76,8 +78,8 @@ function EULEROR1()
  
 function EULEROR2()
   try
-    func1=PedirFormula2();
-    func2=PedirFormula2();
+    func1=PedirFormula2("dy/dx");
+    func2=PedirFormula2("dz/dx");
     x0=ValidarUndato("x");
     y0=ValidarUndato("y"); 
     z0=ValidarUndato("z");    
@@ -105,6 +107,9 @@ function EULEROR2()
       i++;
     endwhile   
     Matriz
+    Vx
+    Vy
+    Vz
   catch
       waitfor(msgbox("Error en el menu de EULER","Error"))
   end_try_catch
@@ -123,7 +128,7 @@ function RK4()
            case 2
             RK4Orden2();
            case 3
-            MetodoEDO();
+            MetodosEDO();
           case 4
             printf ("Sistema finalizado\n");
         endswitch
@@ -170,8 +175,8 @@ function RK4Orden1()
  
 function RK4Orden2()
   try
-    func1=PedirFormula2();
-    func2=PedirFormula2();
+    func1=PedirFormula2("dy/dx");
+    func2=PedirFormula2("dz/dx");
     x0=ValidarUndato("x");
     y0=ValidarUndato("y"); 
     z0=ValidarUndato("z");    
@@ -191,11 +196,21 @@ function RK4Orden2()
       Vx=[Vx x];
       Vy=[Vy y];
       Vz=[Vz z];
-      
-      q=1/4*(k1+k2+k3+k4);
-      yi=y+(q*h);      
+      k1y=feval(func1,x, y,z);
+      k1z=feval(func2,x, y,z);
+      k2y=feval(func1,x+(h/2), y+(k1y*(h/2)),z+(k1z*(h/2)));
+      k2z=feval(func2,x+(h/2), y+(k1y*(h/2)),z+(k1z*(h/2)));
+      k3y=feval(func1,x+(h/2), y+(k2y*(h/2)),z+(k2z*(h/2)));
+      k3z=feval(func2,x+(h/2), y+(k2y*(h/2)),z+(k2z*(h/2)));
+      k4y=feval(func1,x+(h), y+(k3y*(h)),z+(k3z*(h)));
+      k4z=feval(func2,x+(h), y+(k3y*(h)),z+(k3z*(h)));
+      qy=1/4*(k1y+k2y+k3y+k4y);
+      qz=1/4*(k1z+k2z+k3z+k4z);
+      yi=y+(qy*h);      
+      zi=z+(qz*h);      
       x=x+h;
       y=yi;
+      z=zi;
       i++;
     endwhile
     Matriz
@@ -207,9 +222,8 @@ function RK4Orden2()
  
  function K=SolucionKorden2()
    try
-     K=[];
-    K=[K,feval(func,x, y,z)];
-      K=[K,feval(func,x+(h/2), y+(k1*(h/2))),];
+    K1=feval(func,x, y,z);
+      K2=[K,feval(func,x+(h/2), y+(k1*(h/2))),];
       k3y=feval(func,x+(h/2), y+(k2*(h/2)));
       k4y=feval(func,x+(h), y+(k3*(h)));
    catch
@@ -259,11 +273,11 @@ function RK4Orden2()
    endwhile
  endfunction
  
- function funct=PedirFormula2()
+ function funct=PedirFormula2(msg)
    ban=1;
    while ban!=0
      try
-      funcInput=inputdlg ("Ingrese funcion");
+      funcInput=inputdlg (sprintf('Ingrese funcion de %s',msg));
       eval(['funct = @(x,y,z) (' funcInput{1,1} ');']);
       ban=0;
      catch err
