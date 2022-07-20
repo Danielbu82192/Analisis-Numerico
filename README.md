@@ -11,9 +11,7 @@ Algoritmos
 3. Metodos Matriciales
     - Metodo de cramer
     - Metodo Sarrus
-    - Metodo laplace
     - Metodo de Gauss-Seidel
-    - Sistema Diagonal Dominante
 4. Ajuste de curva
     - Polinomio de interpolación de newton
     - Polinomio de interpolación de lagrange

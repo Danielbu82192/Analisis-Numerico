@@ -16,13 +16,13 @@ function Principal()
            MetodosAbiertos();
            Men1=6;
         case 3
-           MenMetodosMatriciales();
+           MetodosMatriciales();
            Men1=6;
         case 4
            MetodosAjusteCurva();
            Men1=6;
         case 5
-           MenMetodosEDO();
+           MetodosEDO();
            Men1=6;
         case 6
            printf ("Sistema finalizado\n");

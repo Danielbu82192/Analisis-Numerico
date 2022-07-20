@@ -3,19 +3,20 @@ function MetodosMatriciales()
     while(Men3!=5)
     try
       Men3=menu("Menu Metodos Matriciales","Metodo de cramer",
-      "Metodo Sarrus","Metodo de Gauss-Seidel","Atras")
-
-    switch(Men3)
-      case 1
-        Cramer()
-      case 2
-        Sarrus()
-      case 3
-        Seidel()
-      case 4
-        Principal()
-    endswitch
-
+      "Metodo Sarrus","Metodo de Gauss-Seidel","Atras","Salir")
+      switch(Men3)
+        case 1
+          Cramer()
+        case 2
+          Sarrus()
+        case 3
+          Seidel()
+        case 4
+          Principal()
+          Men3=5
+        case 5
+          printf ("Sistema finalizado\n");
+      endswitch
      catch
       msgbox("Error en el menu de metodos Matriciales","Error")
      end_try_catch
@@ -23,7 +24,10 @@ function MetodosMatriciales()
  endfunction
 
 
- function Cramer()
+#Metodo Cramer
+function Cramer()
+   clc;
+   fprintf ("***Metodos Cramer***\n");
    #matrizA = PedirMatriz();
    #matrizB = PedirMatrizB();
    try
@@ -42,36 +46,75 @@ function MetodosMatriciales()
       answer = ['X', num2str(i), ' = ', num2str(Dt / dMA)]
     endfor
 
+  waitfor(msgbox ("La respuesta se encuentra en consola"))
    catch
     waitfor(msgbox("Error en Cramer","Error"));
    end_try_catch
+
 
    #da = det(crearmatriz(n,m))
 
 endfunction
 
+function dato=validarMatriz(i,j)
+  ban=1;
+   while ban!=0
+    try
+      dato{1,1}="";
+      dato=inputdlg(sprintf('Ingrese el Elemento de la Matriz A (%d,%d)',i,j));
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+          waitfor(msgbox ("Debe ingresar un dato","Alerta"));
+          ban=1;
+        else if(isnan(str2double(dato{1,1})))
+          waitfor(msgbox ("El dato debe ser numerico","Alerta"));
+        else
+          dato=str2double(dato{1,1});
+          ban=0;
+        endif
+      endif
+    catch err
+      waitfor(msgbox(err.identifier, err.message))
+      waitfor(msgbox ("Error al ingresar el dato","Error"))
+    end_try_catch
+  endwhile
+endfunction
 function A=crearmatriz(n,m)
-
-  #n = ValidarUndatoFila("(n)");
-  #m = ValidarUndatoCol("(m)");
-
   for i=1:n
     for j=1:m
-      A(i,j) = str2double(inputdlg(sprintf('Ingrese el Elemento de la Matriz A (%d,%d)',i,j)));
+      A(i,j) = validarMatriz(i,j);
     endfor
   endfor
 endfunction
 
 function B=crearmatrizB(n)
-
-  #n = ValidarUndatoFila("(n)");
-  #m = ValidarUndatoCol("(m)");
-
   for i=1:n
     for j=1:1
-      B(i,j) = str2double(inputdlg(sprintf('Ingrese el Elemento de la Matriz B (%d,%d)',i,j)));
+      B(i,j) = validarMatrizB(i,j);
     endfor
   endfor
+endfunction
+
+function dato=validarMatrizB(i,j)
+  ban=1;
+   while ban!=0
+    try
+      dato{1,1}="";
+      dato=inputdlg(sprintf('Ingrese el Elemento de la Matriz B (%d,%d)',i,j));
+       if(isnan(dato{1,1})||isempty(dato{1,1}))
+          waitfor(msgbox ("Debe ingresar un dato","Alerta"))
+          ban=1;
+        else if(isnan(str2double(dato{1,1})))
+          waitfor(msgbox ("El dato debe ser numerico","Alerta"))
+        else
+          dato=str2double(dato{1,1});
+          ban=0;
+        endif
+      endif
+    catch err
+      waitfor(msgbox(err.identifier, err.message));
+      waitfor(msgbox ("Error al ingresar el dato","Error"))
+    end_try_catch
+  endwhile
 endfunction
 
 function dato=ValidarUndatoFila(msg)
@@ -79,14 +122,14 @@ function dato=ValidarUndatoFila(msg)
    while ban!=0
      try
        dato{1,1}="";
-       dato=inputdlg(sprintf('Ingrese el numero de Filas de la Matriz %s',msg))
+       dato=inputdlg(sprintf('Ingrese el numero de Filas de la Matriz %s',msg));
        if(isnan(dato{1,1})||isempty(dato{1,1}))
         waitfor(msgbox ("Debe ingresar un dato","Alerta"))
         ban=1;
        else  if(isnan(str2double(dato{1,1})))
         waitfor(msgbox ("El dato debe ser numerico","Alerta"))
       else
-        dato=str2double(dato{1,1})
+        dato=str2double(dato{1,1});
         ban=0;
       endif
       endif
@@ -102,14 +145,14 @@ function dato=ValidarUndatoCol(msg)
    while ban!=0
      try
        dato{1,1}="";
-       dato=inputdlg(sprintf('Ingrese el numero de Columnas de la Matriz %s',msg))
+       dato=inputdlg(sprintf('Ingrese el numero de Columnas de la Matriz %s',msg));
        if(isnan(dato{1,1})||isempty(dato{1,1}))
         waitfor(msgbox ("Debe ingresar un dato","Alerta"))
         ban=1;
        else  if(isnan(str2double(dato{1,1})))
         waitfor(msgbox ("El dato debe ser numerico","Alerta"))
       else
-        dato=str2double(dato{1,1})
+        dato=str2double(dato{1,1});
         ban=0;
       endif
       endif
@@ -121,23 +164,17 @@ function dato=ValidarUndatoCol(msg)
 endfunction
 
 #Metodo Sarrus
- function Sarrus()
+function Sarrus()
+   clc;
+   fprintf ("***Metodos Sarrus***\n");
    try
-     n = ValidarUndatoFila("(n)");
-     m = ValidarUndatoCol("(m)");
-     if(n == 3)
-      if(m == 3)
+     n = 3;
+     m = 3;
+     waitfor(msgbox ("Tener encuenta que Sarrus solo hace matriz de 3x3","Alerta"))
         MA = crearmatriz(n,m);
-
         MA;
-        #MB = MA([1,2],:)
         MB = MA(:,[1,2]);
         MR = [MA MB]
-        #dig = diag(MR);
-        #dig1 = diag(MR,1);
-        #dig2 = diag(MR,2);
-        #b = [dig dig1 dig2];
-
         x=MR;
         i=1;
         f=length(x);
@@ -157,7 +194,6 @@ endfunction
           a=[a;aux];
         endwhile
         a
-
         j=1;
         h=1;
         b=[];
@@ -176,7 +212,6 @@ endfunction
           b=[b;auxb];
         endwhile
         b
-
         opb = b([1,],:);
         ob1 = prod(opb);
 
@@ -200,12 +235,9 @@ endfunction
 
         DA = bsuma - asuma;
 
+        waitpid(msgbox ("En consola se puede visualizar las matrices"))
         waitfor(msgbox(sprintf("La Determinante de la Matriz es %d",DA)))
 
-      endif
-     else
-        waitfor(msgbox ("Debe de ser una matriz de 3x3","Alerta"))
-     endif
    catch
     waitfor(msgbox("Error en Sarrus","Error"));
    end_try_catch
@@ -213,8 +245,9 @@ endfunction
 
 #Metodo Gauss-Seidel
 function Seidel()
+  clc;
+  fprintf ("***Metodos Seidel***\n");
    try
-
     #Solucion por Gauss-Seidel
     n = ValidarUndatoFila("(n)");
     m = ValidarUndatoCol("(m)");
@@ -223,7 +256,6 @@ function Seidel()
     MB = crearmatrizB(n);
 
     #Sistema Diagonalmente Dominante
-
 
     c = size(MA, 2); %Numero de columnas de la Matriz A
     x = zeros (1, c);
@@ -267,6 +299,15 @@ function Seidel()
     endfor
     titles
     answer
+    fprintf ("******************Los resultados de las incognitas son:************\n");
+    for MA = 1:c
+      res = strcat(res, "[X", int2str(MA), "]");
+    endfor
+    for MA = 1:c
+      res = strcat(res, "[E", int2str(MA), "]");
+    endfor
+    respuesta =answer(length(answer),:)
+    waitfor(msgbox ("Las respuesta se encuentran en consola"))
 
    catch
     waitfor(msgbox("Error en Gauss-Seidel","Error"));
