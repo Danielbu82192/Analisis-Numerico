@@ -24,7 +24,7 @@ function MetodosCerrado()
    endwhile
  endfunction
 
-## METODO BISECCIÃN
+## METODO BISECCION
  function Biseccion()
   clc;
   printf ("Metodo Biseccion\n");
@@ -96,7 +96,7 @@ function MetodosCerrado()
      if(vraiz == true)
       raiz=MNvec(length(MNvec));
       errorV=errorVect(length(errorVect));
-      fprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV);
+      waitpid(msgbox(sprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV)))
     endif
     if(tabla == true)
      Mostrar(Avec,Bvec,MNvec,sigvect,errorVect);
@@ -182,7 +182,7 @@ function MetodosCerrado()
        if(vraiz == true)
         raiz=MNvec(length(MNvec));
         errorV=errorVect(length(errorVect));
-        fprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV);
+         waitpid(msgbox(sprintf("La raiz aproximada es:%d y el porcentaje de error es:%d \n", raiz, errorV)))
       endif
       if(tabla == true)
         MostrarFalsaPosicion(Avec,Bvec,Favec,Fbvec,MNvec,sigvect,errorVect);
