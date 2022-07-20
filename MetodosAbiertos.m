@@ -261,6 +261,8 @@ endfunction
 #Metodo de la Secante
 #Metodo de la Secante
 function Secante()
+  clc;
+  fprintf ("***Metodos Secante***\n");
   try
     E=100;
     #xi=0;

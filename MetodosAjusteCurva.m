@@ -31,7 +31,7 @@ function MetodosAjusteCurva()
    fprintf ("***Polinomio de interpolacion de newton***\n");
    x=PedirVectores("x - Independiente");
    y=PedirVectores("y - Dependiente");
- #  x=partirCadena("0 600 1200 1800 2400")
+  # x=partirCadena("0 600 1200 1800 2400")
   # y=partirCadena("350 247 185 140 105")
    x_i =[];
    y_i =[];
@@ -91,8 +91,9 @@ function MetodosAjusteCurva()
      plot(x_i,y_i);
     endif
     if(resultadoCadena == true)
-      fprintf("El polinomio es: \n");
+      fprintf ("***Taller Menu principal***\n");
       cadena
+      waitfor(msgbox ("La respuesta se encuentra en consola"));
     endif
     if(tabla == true)
       M2(matriz,x_i,y_i);
@@ -101,7 +102,7 @@ function MetodosAjusteCurva()
       n=ValidarPunto("n");
       f=eval(['funct = @(x) (' cadena ');']);
       resul=feval(f,n);
-      fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
+      waitpid(msgbox(sprintf("El polinomio en el punto: %d es: %d \n", n, resul)))
     endif
   endwhile
   catch err
@@ -159,13 +160,18 @@ function MetodosAjusteCurva()
  endfunction
 
  function M2(x,x_i,y_i)
-          mostrarPolNewton(x_i,y_i);
-           resultado=[];
+
+           xi= transpose(x_i);
+           yi= transpose(y_i);
+           resultado=[xi,yi];
            newLine=[];
+
            for i=1:length(x)
+
              newLine=[];
-             val=x{i};
-             for j=1:length(x)
+             val=transpose(x{i});
+
+             for j=1:length(x)+1
              if(j<=length(val))
               newLine = [newLine; val{j}];
             else
@@ -178,24 +184,12 @@ function MetodosAjusteCurva()
            resultado=num2str(resultado);
            waitfor(msgbox(num2str(resultado),"Tabla"));
 endfunction
- #Mostrar valores Polinomio de interpolación de newton
-function mostrarPolNewton(x,y)
-           resultado=[];
-           for i=1:length(x)
-             newLine = [x(i), y(i)];
-             before = resultado;
-             resultado = [before; newLine];
-           endfor
-           resultado=num2str(resultado);
-           newLine=[" x |"," f(x)|"];
-           before = resultado;
-           resultado = [newLine; before];
-           waitfor(msgbox(num2str(resultado),"Tabla"));
-endfunction
+
  #Codigo Polinomio de interpolación de lagrange
 function lagrange()
   try
-   clc;
+  clc;
+  fprintf ("***Polinomio de interpolacion de lagrange***\n");
   x=PedirVectores("x");
   y=PedirVectores("y");
   # x=partirCadena("0 0.2 0.4 0.6");
@@ -269,8 +263,10 @@ function lagrange()
       resul=feval(f,n);
       fprintf("El polinomio en el punto: %d  es: %d \n", n,resul);
     endif
+    if(atras==true)
+      waitfor(msgbox ("La respuesta se encuentra en consola"))
+    endif
   endwhile
-
   catch
         waitfor(msgbox(err.identifier, err.message))
         waitfor(msgbox("Error en Lagrange","Error"))
@@ -287,17 +283,18 @@ function mostrarLagrange(allFun,allcalcu)
   polinomio
 endfunction
 
-#Minimos cuadrados
+# Codigo Polinomio Minimos cuadrados
 function MinimosCuadrados()
   try
   clc;
-   x=PedirVectores("x");
-   y=PedirVectores("y");
-   n=ValidarUndato("n");
-   #x=partirCadena("-50 -30 0 60 90 110");
-   #y=partirCadena("1270 1280 1350 1480 1580 1700");
+  fprintf ("***Regresion polinomial por minimo cuadrado***\n");
+  #  x=PedirVectores("x");
+ #   y=PedirVectores("y");
+  #  n=ValidarUndato("n");
+   x=partirCadena("0 2.3 4.9 9.1 13.7 18.3 22.9 27.2");
+   y=partirCadena("22.8 22.8 22.8 20.6 13.9 11.7 11.1 11.1");
    matrizValores={};
-   n=3;
+   n=2;
    da=0;
    dy=0;
    xa=[];
@@ -327,7 +324,7 @@ function MinimosCuadrados()
      vec(length(vec))=sum(vec);
      Tablaxel{i}=vec;
    endfor
-   c=invertirTipoVector(x) ;
+   c=invertirTipoVector(x);
    for i=1:n+1
     for j=1:n+1
       if(i==1&&j==1)
@@ -344,8 +341,17 @@ function MinimosCuadrados()
    for i=2:n+1
      M=Tablaxel{i-1};
      vectorB=[vectorB;M(length(M))];
-
    endfor
+
+  k=1;
+  i=length(matrizValores);
+  while(k<=n)
+      valorxy=Tablaxel{k};
+     matrizValores{i+1}=valorxy;
+     k=k+1;
+     i=i+1;
+  endwhile
+
 
   atras=true;
    while(atras)
@@ -360,16 +366,31 @@ function MinimosCuadrados()
     endif
     if(resultadoCadena == true)
       fprintf("El polinomio es: \n");
-
+      sol=inv(Matriz)*vectorB;
+      cadena=[num2str(sol(1))];
+      for i=2:length(sol)
+        cadena=[cadena sprintf("+[%d*x^%d]",sol(i),i-1)];
+      endfor
+        cadena
+      waitfor(msgbox ("La respuesta se encuentra en consola"))
     endif
     if(tabla == true)
-        matrizValores
+        mostrarMinimos(matrizValores,xa,ya)
     endif
     if(evaluar == true)
-      sol=inv(Matriz)*vectorB
+      n=ValidarPunto("n");
+      sol=inv(Matriz)*vectorB;
+      cadena=[num2str(sol(1))];
+      for i=2:length(sol)
+        cadena=[cadena sprintf("+[%d*x^%d]",sol(i),i-1)];
+      endfor
+        cadena;
+        eval(['funct = @(x) (' cadena ');']);
+        resul=feval(funct,n);
+        waitpid(msgbox(sprintf("El polinomio en el punto: %d  es: %d \n", n, resul)))
+
     endif
   endwhile
-
 
 
   catch err
@@ -378,11 +399,16 @@ function MinimosCuadrados()
   end_try_catch
 endfunction
 
-function mostrarMinimos(x)
-     resultado=[];
+function mostrarMinimos(x,x_i,y_i)
+
+           xi= transpose(x_i);
+           yi= transpose(y_i);
+           resultado=[xi,yi];
            newLine=[];
            for i=1:length(x)
-              newLine = [newLine; x{i}];
+             newLine=[];
+             val=transpose(x{i});
+             newLine = [newLine; val];
              before = resultado;
              resultado = [before, newLine];
            endfor
