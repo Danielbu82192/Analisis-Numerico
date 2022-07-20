@@ -47,6 +47,8 @@ function EULER()
 endfunction
 
 function EULEROR1()
+  clc;
+  fprintf ("***Euler primer orden***\n");
   try
     func=PedirFormula();
     x0=ValidarUndato("x");
@@ -81,21 +83,35 @@ function EULEROR1()
     atras = mostrar(3);
     grafica = mostrar(1);
     tabla = mostrar (2);
+    salir =valorGrafica(4);
 
     if(grafica == true)
      plot(Vx,Vy);
     endif
     if(tabla == true)
-        Matriz
+      imprimirTabla(Matriz)
     endif
+     if (salir==true)
+          printf ("El proceso no se graficara\n");
+      endif
   endwhile
   catch err
         waitfor(msgbox(err.identifier, err.message))
       waitfor(msgbox("Error en el menu de EULER","Error"))
   end_try_catch
 
- endfunction
+endfunction
+function imprimirTabla(Matriz)
+    try
+      answer=[Matriz];
+      answer=num2str(answer);
+      waitfor(msgbox(num2str(answer),"Tabla"));
+    catch err
+      waitfor(msgbox(err.identifier, err.message));
+      waitfor(msgbox("Error en el menu principal","Error"));
+    end_try_catch
 
+endfunction
 function EULEROR2()
   try
     func1=PedirFormula2("dy/dx");
@@ -144,7 +160,7 @@ function EULEROR2()
     tabla = mostrarEDO (2);
 
     if(grafica == true)
-      valorGrafica =valorAGrafica();
+      valorGrafica = valorAGrafica()
       x_p=valorGrafica(1);
       y_p=valorGrafica(2);
       z_p=valorGrafica(3);
@@ -163,7 +179,7 @@ function EULEROR2()
       endif
     endif
     if(tabla == true)
-        Matriz
+        imprimirTabla(Matriz)
     endif
    endwhile
 
