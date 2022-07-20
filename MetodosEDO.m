@@ -11,6 +11,7 @@ function MetodosEDO()
             Men=4
            case 2
             RK4();
+            Men=4
            case 3
             Principal();
             Men=4
@@ -33,8 +34,10 @@ function EULER()
        switch(Men)
           case 1
             EULEROR1();
+            Men=4
            case 2
             EULEROR2();
+            Men=4
            case 3
             MetodosEDO();
           case 4
@@ -78,23 +81,19 @@ function EULEROR1()
     endwhile
 
     atras=true;
-   while(atras)
-    mostrar = menuEDO();
-    atras = mostrar(3);
-    grafica = mostrar(1);
-    tabla = mostrar (2);
-    salir =valorGrafica(4);
+    while(atras)
+      mostrar = menuEDO();
+      atras = mostrar(3);
+      grafica = mostrar(1);
+      tabla = mostrar (2);
 
-    if(grafica == true)
-     plot(Vx,Vy);
-    endif
-    if(tabla == true)
-      imprimirTabla(Matriz)
-    endif
-     if (salir==true)
-          printf ("El proceso no se graficara\n");
+      if(grafica == true)
+       plot(Vx,Vy);
       endif
-  endwhile
+      if(tabla == true)
+        imprimirTabla(Matriz)
+      endif
+    endwhile
   catch err
         waitfor(msgbox(err.identifier, err.message))
       waitfor(msgbox("Error en el menu de EULER","Error"))
@@ -151,42 +150,41 @@ function EULEROR2()
       i++;
     endwhile
 
+  atras=true;
+    while(atras)
+      mostrar = menuEDO();
+      atras = mostrar(3);
+      grafica = mostrar(1);
+      tabla = mostrar (2);
+      if(grafica == true)
+        valorGrafica = valorAGrafica()
+        x_p=valorGrafica(1);
+        y_p=valorGrafica(2);
+        z_p=valorGrafica(3);
+        salir =valorGrafica(4);
+        if(x_p==true && y_p ==true)
+          plot(Vx,Vy);
+        endif
+        if(x_p==true && z_p ==true)
+          plot(Vx,Vz);
+        endif
+        if(z_p==true && y_p ==true)
+          plot(Vz,Vy);
+        endif
+        if (salir==true)
+            printf ("El proceso no se graficara\n");
+        endif
+      endif
+      if(tabla == true)
+          imprimirTabla(Matriz)
+      endif
+    endwhile
 
-    atras=true;
-   while(atras)
-    mostrarEDO = menuEDO()
-    atras = mostrarEDO(4);
-    grafica = mostrarEDO(1);
-    tabla = mostrarEDO (2);
-
-    if(grafica == true)
-      valorGrafica = valorAGrafica()
-      x_p=valorGrafica(1);
-      y_p=valorGrafica(2);
-      z_p=valorGrafica(3);
-      salir =valorGrafica(4);
-      if(x_p==true && y_p ==true)
-        plot(Vx,Vy);
-      endif
-      if(x_p==true && z_p ==true)
-        plot(Vx,Vz);
-      endif
-      if(z_p==true && y_p ==true)
-        plot(Vz,Vy);
-      endif
-      if (salir==true)
-          printf ("El proceso no se graficara\n");
-      endif
-    endif
-    if(tabla == true)
-        imprimirTabla(Matriz)
-    endif
-   endwhile
 
   catch
       waitfor(msgbox("Error en el menu de EULER","Error"))
   end_try_catch
-  endfunction
+endfunction
 
 function RK4()
   fprintf ("***Metodos RK4***\n");
@@ -198,8 +196,10 @@ function RK4()
        switch(Men)
           case 1
             RK4Orden1();
+            Men=3
            case 2
             RK4Orden2();
+            Men=3
            case 3
             MetodosEDO();
           case 4
@@ -246,21 +246,20 @@ function RK4Orden1()
       i++;
     endwhile
 
-
     atras=true;
-   while(atras)
-    mostrarEDO = menuEDO()
-    atras = mostrarEDO(4);
-    grafica = mostrarEDO(1);
-    tabla = mostrarEDO (2);
+    while(atras)
+      mostrar = menuEDO();
+      atras = mostrar(3);
+      grafica = mostrar(1);
+      tabla = mostrar (2);
 
-    if(grafica == true)
-     plot(Vx,Vy);
-    endif
-    if(tabla == true)
-        Matriz
-    endif
-  endwhile
+      if(grafica == true)
+       plot(Vx,Vy);
+      endif
+      if(tabla == true)
+        imprimirTabla(Matriz)
+      endif
+    endwhile
 
   catch
       waitfor(msgbox("Error en RK4","Error"))
@@ -316,7 +315,36 @@ function RK4Orden2()
       z=zi;
       i++;
     endwhile
-    Matriz
+
+  atras=true;
+    while(atras)
+      mostrar = menuEDO();
+      atras = mostrar(3);
+      grafica = mostrar(1);
+      tabla = mostrar (2);
+      if(grafica == true)
+        valorGrafica = valorAGrafica()
+        x_p=valorGrafica(1);
+        y_p=valorGrafica(2);
+        z_p=valorGrafica(3);
+        salir =valorGrafica(4);
+        if(x_p==true && y_p ==true)
+          plot(Vx,Vy);
+        endif
+        if(x_p==true && z_p ==true)
+          plot(Vx,Vz);
+        endif
+        if(z_p==true && y_p ==true)
+          plot(Vz,Vy);
+        endif
+        if (salir==true)
+            printf ("El proceso no se graficara\n");
+        endif
+      endif
+      if(tabla == true)
+          imprimirTabla(Matriz)
+      endif
+    endwhile
   catch
       waitfor(msgbox("Error en RK4","Error"))
   end_try_catch
@@ -417,12 +445,11 @@ function RK4Orden2()
 endfunction
 
 function valorGrafica =valorAGrafica()
-
   x = false;
   y = false;
   z=false;
   salir=false;
-  opcion = menu("Resultado a graficar", "1. X,Y\n","2. X,Z\n", "Y,Z\n", "4. Atras\n");
+  opcion = menu("Resultado a graficar", "X,Y\n","X,Z\n", "Y,Z\n", "4. Atras\n");
 
   if(opcion == 1)
     x = true;
@@ -437,6 +464,6 @@ function valorGrafica =valorAGrafica()
     salir=true;
   endif
 
-  mostrarEDO = [x, y,z,salir];
+  valorGrafica = [x, y,z,salir];
 
 endfunction
